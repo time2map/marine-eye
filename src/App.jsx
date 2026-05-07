@@ -12,6 +12,7 @@ export default function App() {
   const [selected, setSelected]   = useState(null);
   const [hovered,  setHovered]    = useState(null);
   const [pinned, setPinned]       = useState(new Set()); // empty = show all
+  const [flagMode, setFlagMode]   = useState(false);
 
   const { tracksRef } = useAISStream({ mapRef });
 
@@ -47,8 +48,9 @@ export default function App() {
           onShipHover={setHovered}
           tracksRef={tracksRef}
           selectedShip={selected}
+          flagMode={flagMode}
         />
-        <Legend pinned={pinned} onToggle={toggleCategory} />
+        <Legend pinned={pinned} onToggle={toggleCategory} flagMode={flagMode} onFlagMode={setFlagMode} />
         <Tooltip ship={hovered} />
         <InfoPanel ship={selected} onClose={() => setSelected(null)} />
       </div>

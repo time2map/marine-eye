@@ -1,6 +1,6 @@
 import { SHIP_CATEGORIES } from '../utils/shipTypes';
 
-export function Legend({ pinned, onToggle }) {
+export function Legend({ pinned, onToggle, flagMode, onFlagMode }) {
   const hasSelection = pinned.size > 0;
   return (
     <div className="legend">
@@ -23,6 +23,15 @@ export function Legend({ pinned, onToggle }) {
           </button>
         );
       })}
+      <div className="legend-divider" />
+      <button
+        className={`legend-item legend-item--btn ${flagMode ? 'legend-item--flag-on' : 'legend-item--off'}`}
+        onClick={() => onFlagMode(m => !m)}
+        title={flagMode ? 'Hide flags' : 'Show flags'}
+      >
+        <span className="legend-flag-icon">🏳</span>
+        Flags
+      </button>
     </div>
   );
 }

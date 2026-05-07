@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { getShipCategory } from '../utils/shipTypes';
+import { mmsiToFlag } from '../utils/midFlags';
 
 const WS_URL = 'wss://stream.aisstream.io/v0/stream';
 const API_KEY = import.meta.env.VITE_AIS_API_KEY;
@@ -26,6 +27,8 @@ function buildGeoJSON(ships) {
         imo:         ship.imo ?? '',
         callSign:    ship.callSign ?? '',
         destination: ship.destination ?? '',
+        flag:        ship.flagEmoji ?? '',
+        country:     ship.country ?? '',
       },
     });
   }
@@ -76,7 +79,12 @@ export function useAISStream({ mapRef }) {
         const mmsi = String(MetaData?.MMSI || '');
         if (!mmsi) return;
 
-        const existing = shipsRef.current.get(mmsi) || { mmsi };
+        const flagInfo  = mmsiToFlag(mmsi);
+        const existing  = shipsRef.current.get(mmsi) || {
+          mmsi,
+          flagEmoji: flagInfo?.emoji ?? '',
+          country:   flagInfo?.country ?? '',
+        };
 
         if (MessageType === 'PositionReport') {
           const pr  = Message.PositionReport;

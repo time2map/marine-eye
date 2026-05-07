@@ -30,10 +30,17 @@ export function InfoPanel({ ship, onClose }) {
 
       <div className="info-header">
         <div className="info-ship-name">{ship.name}</div>
-        <span className="info-badge" style={{ background: cat.color + '22', color: cat.color, borderColor: cat.color + '44' }}>
-          <span className="info-badge-dot" style={{ background: cat.color }} />
-          {cat.label}
-        </span>
+        <div className="info-header-meta">
+          <span className="info-badge" style={{ background: cat.color + '22', color: cat.color, borderColor: cat.color + '44' }}>
+            <span className="info-badge-dot" style={{ background: cat.color }} />
+            {cat.label}
+          </span>
+          {ship.flag && (
+            <span className="info-flag" title={ship.country}>
+              {ship.flag} <span className="info-flag-country">{ship.country}</span>
+            </span>
+          )}
+        </div>
         <div className="info-nav-status">{navLabel}</div>
       </div>
 
