@@ -3,6 +3,13 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { SHIP_CATEGORIES } from '../utils/shipTypes';
 
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 const MAP_STYLE    = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 const SPAIN_CENTER = [-3.7, 40.4];
 const INITIAL_ZOOM = 5.5;
@@ -40,6 +47,31 @@ function setupShipLayer(map, onShipClick, onShipHover) {
       if (!map.hasImage(`ship-${key}`)) {
         map.addImage(`ship-${key}`, createArrowImage(color));
       }
+    }
+
+    // Track layer — added before ships so arrows render on top
+    if (!map.getSource('ship-track')) {
+      map.addSource('ship-track', {
+        type: 'geojson',
+        lineMetrics: true,
+        data: { type: 'FeatureCollection', features: [] },
+      });
+    }
+    if (!map.getLayer('ship-track-line')) {
+      map.addLayer({
+        id: 'ship-track-line',
+        type: 'line',
+        source: 'ship-track',
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-width': 2.5,
+          'line-gradient': [
+            'interpolate', ['linear'], ['line-progress'],
+            0, 'rgba(255,255,255,0)',
+            1, 'rgba(255,255,255,0.85)',
+          ],
+        },
+      });
     }
 
     if (!map.getSource('ships')) {
@@ -87,8 +119,41 @@ function setupShipLayer(map, onShipClick, onShipHover) {
   }
 }
 
-export function Map({ mapRef, onShipClick, onShipHover }) {
+export function Map({ mapRef, onShipClick, onShipHover, tracksRef, selectedShip }) {
   const containerRef = useRef(null);
+
+  // Live-update the track while a ship is selected
+  useEffect(() => {
+    function updateTrack() {
+      const map = mapRef.current;
+      const src = map?.getSource('ship-track');
+      if (!src) return;
+
+      if (!selectedShip) {
+        src.setData({ type: 'FeatureCollection', features: [] });
+        return;
+      }
+
+      const coords = tracksRef.current.get(selectedShip.mmsi) || [];
+      if (coords.length < 2) return;
+
+      const color = SHIP_CATEGORIES[selectedShip.category]?.color || '#ffffff';
+      src.setData({
+        type: 'FeatureCollection',
+        features: [{ type: 'Feature', geometry: { type: 'LineString', coordinates: coords }, properties: {} }],
+      });
+      map.setPaintProperty('ship-track-line', 'line-gradient', [
+        'interpolate', ['linear'], ['line-progress'],
+        0,   hexToRgba(color, 0),
+        0.5, hexToRgba(color, 0.3),
+        1,   hexToRgba(color, 0.9),
+      ]);
+    }
+
+    updateTrack();
+    const id = setInterval(updateTrack, 1000);
+    return () => clearInterval(id);
+  }, [selectedShip, tracksRef, mapRef]);
 
   useEffect(() => {
     const map = new maplibregl.Map({

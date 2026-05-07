@@ -32,9 +32,12 @@ function buildGeoJSON(ships) {
   return { type: 'FeatureCollection', features };
 }
 
+const MAX_TRACK_PTS = 500;
+
 export function useAISStream({ mapRef }) {
-  const shipsRef = useRef(new Map());
-  const wsRef    = useRef(null);
+  const shipsRef  = useRef(new Map());
+  const tracksRef = useRef(new Map());
+  const wsRef     = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -95,6 +98,12 @@ export function useAISStream({ mapRef }) {
             category:  existing.category || getShipCategory(existing.shipType),
           });
 
+          // Accumulate track
+          const track = tracksRef.current.get(mmsi) || [];
+          track.push([pr.Longitude, pr.Latitude]);
+          if (track.length > MAX_TRACK_PTS) track.shift();
+          tracksRef.current.set(mmsi, track);
+
         } else if (MessageType === 'ShipStaticData') {
           const sd = Message.ShipStaticData;
           shipsRef.current.set(mmsi, {
@@ -121,4 +130,6 @@ export function useAISStream({ mapRef }) {
       wsRef.current?.close();
     };
   }, [mapRef]);
+
+  return { tracksRef };
 }

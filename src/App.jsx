@@ -13,7 +13,7 @@ export default function App() {
   const [hovered,  setHovered]    = useState(null);
   const [pinned, setPinned]       = useState(new Set()); // empty = show all
 
-  useAISStream({ mapRef });
+  const { tracksRef } = useAISStream({ mapRef });
 
   const toggleCategory = useCallback((key) => {
     setPinned((prev) => {
@@ -45,6 +45,8 @@ export default function App() {
           mapRef={mapRef}
           onShipClick={setSelected}
           onShipHover={setHovered}
+          tracksRef={tracksRef}
+          selectedShip={selected}
         />
         <Legend pinned={pinned} onToggle={toggleCategory} />
         <Tooltip ship={hovered} />
