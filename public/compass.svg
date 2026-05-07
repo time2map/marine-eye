@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background -->
+  <rect width="200" height="200" rx="44" fill="#0d1117"/>
+
+  <!-- Outer circle -->
+  <circle cx="100" cy="100" r="82" fill="none" stroke="#c8ccd0" stroke-width="2.5"/>
+  <!-- Inner circle -->
+  <circle cx="100" cy="100" r="60" fill="none" stroke="#c8ccd0" stroke-width="1.8"/>
+
+  <!-- 8 compass rose kite shapes (fill=none → outline style showing inner lines) -->
+  <!-- N -->
+  <path d="M100,25 L105,89 L100,100 L95,89 Z"   fill="none" stroke="#c8ccd0" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- NE -->
+  <path d="M133,68 L105,89 L100,100 L111,95 Z"  fill="none" stroke="#c8ccd0" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- E -->
+  <path d="M175,100 L111,95 L100,100 L111,105 Z" fill="none" stroke="#c8ccd0" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- SE -->
+  <path d="M133,133 L111,105 L100,100 L105,111 Z" fill="none" stroke="#c8ccd0" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- S -->
+  <path d="M100,175 L105,111 L100,100 L95,111 Z"  fill="none" stroke="#c8ccd0" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- SW -->
+  <path d="M68,133 L95,111 L100,100 L89,105 Z"   fill="none" stroke="#c8ccd0" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- W -->
+  <path d="M25,100 L89,105 L100,100 L89,95 Z"    fill="none" stroke="#c8ccd0" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- NW -->
+  <path d="M68,68 L89,95 L100,100 L95,89 Z"      fill="none" stroke="#c8ccd0" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Cardinal labels -->
+  <text x="100" y="13"  text-anchor="middle" dominant-baseline="central" fill="#c8ccd0" font-family="system-ui,sans-serif" font-size="14" font-weight="700">N</text>
+  <text x="100" y="188" text-anchor="middle" dominant-baseline="central" fill="#c8ccd0" font-family="system-ui,sans-serif" font-size="14" font-weight="700">S</text>
+  <text x="188" y="101" text-anchor="middle" dominant-baseline="central" fill="#c8ccd0" font-family="system-ui,sans-serif" font-size="14" font-weight="700">E</text>
+  <text x="12"  y="101" text-anchor="middle" dominant-baseline="central" fill="#c8ccd0" font-family="system-ui,sans-serif" font-size="14" font-weight="700">W</text>
+
+  <!-- Orange center dot -->
+  <circle cx="100" cy="100" r="7.5" fill="#F97316"/>
+</svg>
