@@ -139,5 +139,5 @@ export function useAISStream({ mapRef }) {
     };
   }, [mapRef]);
 
-  return { tracksRef };
+  return { tracksRef, shipsRef };
 }

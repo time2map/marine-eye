@@ -4,6 +4,8 @@ Real-time vessel tracking on an interactive dark map. Ships stream live from [AI
 
 **Live demo → [time2map.github.io/marine-eye](https://time2map.github.io/marine-eye/)**
 
+![MarineEye — real-time vessel tracking](docs/screenshot.jpg)
+
 ## Features
 
 - **Live AIS data** — WebSocket stream, sub-second latency, auto-reconnects
@@ -12,6 +14,8 @@ Real-time vessel tracking on an interactive dark map. Ships stream live from [AI
 - **Click info panel** — MMSI, IMO, call sign, speed, course, heading, destination
 - **Category filter** — click a legend item to isolate that type; click more to combine; click all off to reset
 - **Live track** — historical trail fades from transparent to the vessel's colour; updates every second while a ship is selected
+- **Country filter** — dropdown shows all flag states with live vessel counts, sorted by traffic; combines with type filter
+- **Flag & country** — MMSI-derived flag emoji and country name shown in the info panel
 
 ## Tech stack
 

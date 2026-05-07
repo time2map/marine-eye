@@ -93,13 +93,6 @@ function setupShipLayer(map, onShipClick, onShipHover) {
           'icon-rotation-alignment': 'map',
           'icon-allow-overlap':      true,
           'icon-ignore-placement':   true,
-          'text-field':              '',
-          'text-size':               14,
-          'text-offset':             [0.9, -0.9],
-          'text-anchor':             'bottom-left',
-          'text-allow-overlap':      true,
-          'text-ignore-placement':   true,
-          'text-optional':           true,
         },
       });
     }
@@ -126,15 +119,8 @@ function setupShipLayer(map, onShipClick, onShipHover) {
   }
 }
 
-export function Map({ mapRef, onShipClick, onShipHover, tracksRef, selectedShip, flagMode }) {
+export function Map({ mapRef, onShipClick, onShipHover, tracksRef, selectedShip }) {
   const containerRef = useRef(null);
-
-  // Toggle flag labels on/off
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map?.getLayer('ships')) return;
-    map.setLayoutProperty('ships', 'text-field', flagMode ? ['get', 'flag'] : '');
-  }, [flagMode, mapRef]);
 
   // Live-update the track while a ship is selected
   useEffect(() => {
